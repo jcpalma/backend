@@ -1,10 +1,14 @@
 import app from './app';
+import { dbInit } from './db/database';
+
 
 async function main() {
 
-    await app.listen(app.get('port'));
-    console.log('Server on port', app.get('port'));
+    // Inicia la conexión a la base de datos.
+    await dbInit();
 
+    app.listen(app.get('port'));
+    console.log('Server on port', app.get('port'));
 }
 
 main();
