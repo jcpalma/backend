@@ -7,7 +7,7 @@ async function main() {
     // Inicia la conexión a la base de datos.
     await dbInit();
 
-    app.listen(app.get('port'));
+    await app.listen(app.get('port'));
     console.log('Server on port', app.get('port'));
 }
 

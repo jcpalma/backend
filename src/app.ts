@@ -1,7 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
-import mongoose from 'mongoose';
-import path from 'path';
+// import path from 'path';
 
 import indexRoute from './routes/index'
 
@@ -14,10 +13,10 @@ app.set('port', process.env.BACKEND_PORT || 3000);
 
 // * Middleware
 app.use(morgan('dev'));
-app.use(express.json);
+//// app.use(express.json);
 
 // * Rutas
-app.use('/api/v1', indexRoute);
+app.use('/api', indexRoute);
 
 // Carpetas estaticas
 // app.use('/public', express.static(path.resolve('public')));
