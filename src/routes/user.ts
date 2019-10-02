@@ -1,13 +1,18 @@
 import { Router } from 'express';
-import { getUserList, getUser, createUser, updateUser, deleteUser } from '../controllers/user-controller';
-
 import { auth } from '../../middleware/auth';
+import {
+    getUserList,
+    getUser,
+    createUser,
+    updateUser,
+    deleteUser
+} from '../controllers/user-controller';
 
 const userRouter = Router();
 
-
+// Definición de los Endpoints (CRUD)
 userRouter
-    .get('/', auth, getUserList)
+    .get('/', getUserList)
     .get('/:id', auth, getUser)
     .post('/', auth, createUser)
     .put('/:id', auth, updateUser)
