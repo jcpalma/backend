@@ -29,7 +29,7 @@ export function auth(req: Request, res: Response, next: NextFunction) {
                 errors: err
             });
         }
-        req.authUser = decoded.user;
+        req.authUser = <IUser>decoded.user;
         next();
     });
 }

@@ -24,8 +24,7 @@ export function getUserList(req: Request, res: Response, next: NextFunction) {
 
         return res.status(200).json({
             ok: true,
-            users: users,
-            authUser: req.authUser
+            users: users
         });
     });
 };
