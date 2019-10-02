@@ -1,15 +1,29 @@
 import { Router, Request, Response, NextFunction } from 'express';
 
-const router = Router();
+const appRouter = Router();
 
-router.get('/', (req: Request, res: Response, next: NextFunction) => {
-    res
-        .status(200)
-        .send({
-            ok: true,
-            mensaje: 'OK'
-        });
+appRouter.get('/', (req: Request, res: Response, next: NextFunction) => {
+
+    res.status(200)
+    res.json({
+        ok: true,
+        mensaje: 'OK'
+    });
 
 });
 
-export default router;
+/**
+ * * 
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+export function ignoreFavicon(req: Request, res: Response, next: NextFunction) {
+    if (req.originalUrl === '/favicon.ico') {
+        res.status(204).json({ nope: true });
+    } else {
+        next();
+    }
+}
+
+export default appRouter;
