@@ -3,9 +3,11 @@ import morgan from 'morgan';
 import bodyParser from 'body-parser';
 // import path from 'path';
 
-import appRouter, { ignoreFavicon } from './routes/index';
+import { ignoreFavicon } from '../middleware/favicon';
+import appRouter from './routes/index';
 import userRouter from './routes/user';
 import loginRouter from './routes/login';
+import hospitalRouter from './routes/hospital';
 
 // * Creación de la aplicación de Express 
 const app = express();
@@ -24,6 +26,7 @@ app.use(ignoreFavicon);
 // * Rutas
 app.use('/login', loginRouter);
 app.use('/user', userRouter);
+app.use('/hospital', hospitalRouter);
 app.use('/', appRouter);
 
 // Carpetas estaticas
