@@ -11,19 +11,31 @@ import { Types } from 'mongoose';
  * @param next 
  */
 export function getHospitalList(req: Request, res: Response, next: NextFunction) {
-    Hospital.find({}, { __v: 0 }, (err, hospitals) => {
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                message: 'Error al obtener el listado de hospitales.',
-                errors: err
+
+    const offset: number = Number.parseInt(req.query.offset) || 0;
+    const fetch: number = Number.parseInt(req.query.fetch) || 5;
+
+    Hospital.find({}, { __v: 0 })
+        .skip(offset)
+        .limit(fetch)
+        .populate('userId', 'name email')
+        .exec((err, hospitals) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    message: 'Error al obtener el listado de hospitales.',
+                    errors: err
+                });
+            }
+            Hospital.count({}, (err, count) => {
+                return res.status(200).json({
+                    ok: true,
+                    total: count,
+                    fetch: hospitals.length,
+                    hospitals: hospitals
+                });
             });
-        }
-        return res.status(200).json({
-            ok: true,
-            hospitals: hospitals
         });
-    });
 }
 
 /**
@@ -44,29 +56,31 @@ export function getHospital(req: Request, res: Response, next: NextFunction) {
         });
     }
 
-    Hospital.findById(id, { __v: 0 }, (err, hospital) => {
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                message: 'Error al obtener hospital.',
-                error: err
+    Hospital.findById(id, { __v: 0 })
+        .populate('userId', 'name email')
+        .exec((err, hospital) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    message: 'Error al obtener hospital.',
+                    error: err
+                });
+            }
+            // El hospital no existe.
+            if (!hospital) {
+                return res.status(400).json({
+                    ok: false,
+                    message: 'Error al obtener el hospital.',
+                    errors: { message: `El hospital '${id}' no existe.` }
+                });
+            }
+            // Devuelve el hospital
+            res.status(200).json({
+                ok: true,
+                message: 'Hospital devuelto.',
+                hospital: hospital
             });
-        }
-        // El hospital no existe.
-        if (!hospital) {
-            return res.status(400).json({
-                ok: false,
-                message: 'Error al obtener el hospital.',
-                errors: { message: `El hospital '${id}' no existe.` }
-            });
-        }
-        // Devuelve el hospital
-        res.status(200).json({
-            ok: true,
-            message: 'Hospital devuelto.',
-            hospital: hospital
         });
-    });
 }
 
 /**
@@ -122,21 +136,9 @@ export function updateHospital(req: Request, res: Response, next: NextFunction) 
         });
     }
 
-    const { name, img } = req.body;
-
-    // Valida que envien al menos un campo a actualiza.
-    if (!name && !img) {
-        return res.status(400).json({
-            ok: false,
-            message: 'Error al actualizar hospital.',
-            errors: { message: 'No se incluyeron los campos a actualizar.' }
-        });
+    let fields = {
+        name: req.body.name
     }
-
-    let fields: any = {};
-    if (name) { fields.name = name; }
-    if (img) { fields.img = img; }
-
     // Opciones 
     let options = {
         new: true,
@@ -195,7 +197,7 @@ export function deleteHospital(req: Request, res: Response, next: NextFunction) 
                 error: err
             });
         }
-        // Si el usuario no existe.
+        // Si el hospital no existe.
         if (!delHospital) {
             return res.status(400).json({
                 ok: false,
@@ -203,7 +205,7 @@ export function deleteHospital(req: Request, res: Response, next: NextFunction) 
                 errors: { message: `El hospital '${id}' no existe.` }
             });
         }
-        // Responde que el usuario fue eliminado exitosamente.
+        // Responde que el hospital fue eliminado exitosamente.
         res.status(200).json({
             ok: true,
             message: 'Hospital eliminado.',
