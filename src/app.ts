@@ -8,6 +8,7 @@ import appRouter from './routes/index';
 import userRouter from './routes/user';
 import loginRouter from './routes/login';
 import hospitalRouter from './routes/hospital';
+import doctorRouter from './routes/doctor';
 
 // * Creación de la aplicación de Express 
 const app = express();
@@ -27,10 +28,10 @@ app.use(ignoreFavicon);
 app.use('/login', loginRouter);
 app.use('/user', userRouter);
 app.use('/hospital', hospitalRouter);
+app.use('/doctor', doctorRouter);
 app.use('/', appRouter);
 
 // Carpetas estaticas
 // app.use('/public', express.static(path.resolve('public')));
-
 
 export default app;
