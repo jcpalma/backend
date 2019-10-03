@@ -16,8 +16,8 @@ export function getDoctorList(req: Request, res: Response) {
     Doctor.find({}, { __v: 0 })
         .skip(offset)
         .limit(fetch)
-        .populate('userId', 'name email')
-        .populate('hospitalId', { __v: 0 })
+        .populate('user', 'name email')
+        .populate('hospital', { __v: 0 })
         .exec((err, doctors) => {
             if (err) {
                 return res.status(500).json({
@@ -55,8 +55,8 @@ export function getDoctor(req: Request, res: Response) {
     }
 
     Doctor.findById(id, { __v: 0 })
-        .populate('userId', 'name email')
-        .populate('hospitalId', { __v: 0 })
+        .populate('user', 'name email')
+        .populate('hospital', { __v: 0 })
         .exec((err, doctor) => {
             if (err) {
                 return res.status(500).json({
@@ -88,14 +88,14 @@ export function getDoctor(req: Request, res: Response) {
  * @param res response body.
  */
 export function createDoctor(req: Request, res: Response) {
-    const { name, img, hospitalId } = req.body;
+    const { name, img, hospital } = req.body;
     const user: IUser = <IUser>req.authUser;
 
     const doctor: IDoctor = new Doctor({
         name: name,
         img: img,
-        userId: user._id,
-        hospitalId: hospitalId
+        user: user._id,
+        hospital: hospital
     });
 
     doctor.save((err, newDoctor) => {
@@ -134,12 +134,12 @@ export function updateDoctor(req: Request, res: Response) {
 
     let fields: any = {}
     if (req.body.name) { fields.name = req.body.name; }
-    if (req.body.hospitalId) { fields.hospitalId = req.body.hospitalId; }
+    if (req.body.hospital) { fields.hospital = req.body.hospital; }
 
     // Opciones 
     let options = {
         new: true,
-        select: 'name img userId hospitalId',
+        select: 'name img user hospital',
         runValidators: true
     }
 
