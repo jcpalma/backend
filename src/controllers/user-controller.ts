@@ -1,4 +1,3 @@
-
 import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
 import { Types } from 'mongoose'
@@ -12,21 +11,34 @@ import User, { IUser } from '../models/user-model';
  * @param next 
  */
 export function getUserList(req: Request, res: Response, next: NextFunction) {
-    // También se puede indicar los campos que se devuelven estableciendo el valor a 1.
-    User.find({}, { password: 0, __v: 0 }, (err, users) => {
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                message: 'Error al obtener el listado de usuarios.',
-                errors: err
-            });
-        }
 
-        return res.status(200).json({
-            ok: true,
-            users: users
+    const offset: number = Number.parseInt(req.query.offset) || 0;
+    const fetch: number = Number.parseInt(req.query.fetch) || 5;
+
+    User.find({}, { password: 0, __v: 0 })
+        .skip(offset)
+        .limit(fetch)
+        .exec((err, users) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    message: 'Error al obtener el listado de usuarios.',
+                    errors: err
+                });
+            }
+            User.count({}, (err, count) => {
+                return res.status(200).json({
+                    ok: true,
+                    total: count,
+                    fetch: users.length,
+                    users: users
+                });
+            });
+
+
+
+
         });
-    });
 };
 
 /**
@@ -130,15 +142,6 @@ export function updateUser(req: Request, res: Response, next: NextFunction) {
     }
     // Obtiene los campos a modificar para el usuario.
     const body: IUser = req.body;
-
-    // Valida que envien al menos un campo a actualiza.
-    if (!body.name && !body.email && !body.role) {
-        return res.status(400).json({
-            ok: false,
-            message: 'Error al actualizar usuario.',
-            errors: { message: 'No se incluyeron los campos a actualizar.' }
-        });
-    }
 
     let fields: any = {};
     if (body.name) { fields.name = body.name; }
