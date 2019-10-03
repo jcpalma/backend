@@ -18,7 +18,7 @@ export function getHospitalList(req: Request, res: Response, next: NextFunction)
     Hospital.find({}, { __v: 0 })
         .skip(offset)
         .limit(fetch)
-        .populate('userId', 'name email')
+        .populate('user', 'name email')
         .exec((err, hospitals) => {
             if (err) {
                 return res.status(500).json({
@@ -57,7 +57,7 @@ export function getHospital(req: Request, res: Response, next: NextFunction) {
     }
 
     Hospital.findById(id, { __v: 0 })
-        .populate('userId', 'name email')
+        .populate('user', 'name email')
         .exec((err, hospital) => {
             if (err) {
                 return res.status(500).json({
@@ -97,7 +97,7 @@ export function createHospital(req: Request, res: Response, next: NextFunction) 
     const hospital: IHospital = new Hospital({
         name: name,
         img: img,
-        userId: user._id
+        user: user._id
     });
 
     hospital.save((err, newHospital) => {
@@ -142,7 +142,7 @@ export function updateHospital(req: Request, res: Response, next: NextFunction) 
     // Opciones 
     let options = {
         new: true,
-        select: 'name img userId',
+        select: 'name img user',
         runValidators: true
     }
 
