@@ -16,10 +16,12 @@
     "@types/bcrypt": "^3.0.0",
     "@types/body-parser": "^1.17.1",
     "@types/express": "^4.17.1",
+    "@types/express-fileupload": "^1.1.0",
     "@types/jsonwebtoken": "^8.3.4",
     "@types/mongoose": "^5.5.18",
     "@types/mongoose-unique-validator": "^1.0.2",
     "@types/morgan": "^1.7.37",
+    "@types/uuid": "^3.4.5",
     "nodemon": "^1.19.3",
     "rimraf": "^3.0.0",
     "ts-node": "^8.4.1",
@@ -29,9 +31,11 @@
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
+    "express-fileupload": "^1.1.6-alpha.5",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.3",
     "mongoose-unique-validator": "^2.0.3",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "uuid": "^3.3.3"
   }
 }
