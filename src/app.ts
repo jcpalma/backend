@@ -12,6 +12,7 @@ import hospitalRouter from './routes/hospital';
 import doctorRouter from './routes/doctor';
 import findRouter from './routes/find';
 import uploadRouter from './routes/upload';
+import imageRouter from './routes/imagen';
 
 // * Creación de la aplicación de Express 
 const app = express();
@@ -27,13 +28,19 @@ app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-
 app.use(bodyParser.json()); // parse application/json
 app.use(ignoreFavicon);
 
-// * Rutas
+// Server index config
+// //import serveIndex from 'serve-index';
+// //app.use('/uploads', express.static('uploads'), serveIndex('uploads', { 'icons': true }))
+
+
+// * Rutas (endpoint)
 app.use('/login', loginRouter);
 app.use('/users', userRouter);
 app.use('/hospitals', hospitalRouter);
 app.use('/doctors', doctorRouter);
 app.use('/find', findRouter);
 app.use('/upload', uploadRouter);
+app.use('/img', imageRouter);
 app.use('/', appRouter);
 
 // Carpetas estaticas

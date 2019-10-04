@@ -7,9 +7,9 @@ const uploadRouter = Router();
 
 uploadRouter
     .use(fileUpload())
-    .put('/users/:id', uploadImage)
-    .put('/doctors/:id', uploadImage)
-    .put('/hospitals/:id', uploadImage)
+    .put('/users/:id', auth, uploadImage)
+    .put('/doctors/:id', auth, uploadImage)
+    .put('/hospitals/:id', auth, uploadImage)
     ;
 
 export default uploadRouter;
