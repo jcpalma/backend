@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
+
 // import path from 'path';
 
 import { ignoreFavicon } from '../middleware/favicon';
@@ -9,6 +10,8 @@ import userRouter from './routes/user';
 import loginRouter from './routes/login';
 import hospitalRouter from './routes/hospital';
 import doctorRouter from './routes/doctor';
+import findRouter from './routes/find';
+import uploadRouter from './routes/upload';
 
 // * Creación de la aplicación de Express 
 const app = express();
@@ -26,9 +29,11 @@ app.use(ignoreFavicon);
 
 // * Rutas
 app.use('/login', loginRouter);
-app.use('/user', userRouter);
-app.use('/hospital', hospitalRouter);
-app.use('/doctor', doctorRouter);
+app.use('/users', userRouter);
+app.use('/hospitals', hospitalRouter);
+app.use('/doctors', doctorRouter);
+app.use('/find', findRouter);
+app.use('/upload', uploadRouter);
 app.use('/', appRouter);
 
 // Carpetas estaticas
