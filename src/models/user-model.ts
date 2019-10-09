@@ -20,7 +20,8 @@ const UserSchema: Schema = new Schema({
     email: { type: String, unique: true, required: [true, 'El correo es requerido'] },
     password: { type: String, required: [true, 'La constraseñ es requerida'] },
     img: { type: String, required: false },
-    role: { type: String, required: true, default: 'ROL_USER', enum: roleList }
+    role: { type: String, required: true, default: 'ROL_USER', enum: roleList },
+    google: { type: Boolean, default: false }
 });
 
 UserSchema.plugin(uniqueValidator, {
